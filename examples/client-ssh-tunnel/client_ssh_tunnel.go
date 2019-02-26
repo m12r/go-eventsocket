@@ -10,15 +10,18 @@
 //
 // $ ssh-keygen -b 2048 -t rsa -f /tmp/id_rsa -q -N ""
 //
-// Then you need to copy the key from /tmp/id_rsa.pub to the user's
-// ~/.ssh/authorized_keys file.
+// Then you need to copy the public key from /tmp/id_rsa.pub to the user's
+// ~/.ssh/authorized_keys file on the remote host. If you don't copy the
+// private key, the password authentication is used instead.
+//
+// WARNING: Please be aware, that anyone which has the private key, can connect
+// to the remote system, without any password!
 package main
 
 import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net"
 
 	"github.com/m12r/go-eventsocket/eventsocket"
 	"golang.org/x/crypto/ssh"
@@ -52,10 +55,7 @@ func makeSSHConfig(user, password string) (*ssh.ClientConfig, error) {
 			ssh.PublicKeys(key),
 			ssh.Password(password),
 		},
-		HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
-			// you should probably verify the host key here!
-			return nil
-		},
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 
 	return &config, nil
