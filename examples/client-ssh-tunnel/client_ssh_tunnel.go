@@ -12,7 +12,7 @@
 //
 // Then you need to copy the public key from /tmp/id_rsa.pub to the user's
 // ~/.ssh/authorized_keys file on the remote host. If you don't copy the
-// private key, the password authentication is used instead.
+// public key, the password authentication is used instead.
 //
 // WARNING: Please be aware, that anyone which has the private key, can connect
 // to the remote system, without any password!
