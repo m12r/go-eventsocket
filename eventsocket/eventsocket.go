@@ -120,6 +120,12 @@ func Dial(addr, passwd string) (*Connection, error) {
 	if err != nil {
 		return nil, err
 	}
+	return NewConnection(c, passwd)
+}
+
+// NewConnection attemps to connect to FreeSWITCH and authenticate using
+// an already existing connection.
+func NewConnection(c net.Conn, passwd string) (*Connection, error) {
 	h := newConnection(c)
 	m, err := h.textreader.ReadMIMEHeader()
 	if err != nil {
